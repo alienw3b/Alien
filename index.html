@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Tars - Protocolo Maestro</title>
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #f4f4f4;
+            --accent: #d9534f;
+            --text: #333;
+            --code-bg: #e8e8e8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        .badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            vertical-align: middle;
+        }
+        
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Simulador / Calculadora */
+        .simulator-box {
+            background-color: #eef5fa;
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #002244;
+        }
+
+        /* Áreas de Código para Copiar */
+        .code-section {
+            margin-top: 20px;
+        }
+        .copy-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 180px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            background-color: var(--code-bg);
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-sizing: border-box;
+            color: #333;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .label-area {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        .note {
+            font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SISTEMA TARS: MANUAL & CALCULADORA</h1>
+    <p style="text-align: center;">Protocolo Maestro de Producción de Ventanas Corredizas (Ecuador)</p>
+
+    <section>
+        <h2>1. Parámetros Inmutables</h2>
+        <table>
+            <tr>
+                <th>Constante</th>
+                <th>Valor / Regla</th>
+                <th>Detalle</th>
+            </tr>
+            <tr>
+                <td>Pieza Aluminio</td>
+                <td>640.0 cm</td>
+                <td>Longitud estándar de fábrica.</td>
+            </tr>
+            <tr>
+                <td>Plancha Vidrio</td>
+                <td>214 x 330 cm</td>
+                <td>Formato base para optimización.</td>
+            </tr>
+            <tr>
+                <td>Regla Compra Aluminio</td>
+                <td>Medida + 3.0 cm</td>
+                <td>Se suma 3cm a todo corte (retazo) por seguridad.</td>
+            </tr>
+            <tr>
+                <td>Regla Compra Vidrio</td>
+                <td>Exacta (0.0 cm)</td>
+                <td>Se pide medida neta. Sin tolerancias.</td>
+            </tr>
+        </table>
+
+        <h2>2. Fórmulas de Corte</h2>
+        <table>
+            <tr>
+                <th>Elemento</th>
+                <th>Fórmula</th>
+                <th>Explicación</th>
+            </tr>
+            <tr>
+                <td>Jamba (Alto)</td>
+                <td>J = Alto - 1</td>
+                <td>Descuento holgura instalación.</td>
+            </tr>
+            <tr>
+                <td>Riel (Ancho)</td>
+                <td>R = Ancho</td>
+                <td>Medida total del vano.</td>
+            </tr>
+            <tr>
+                <td>Hoja Horizontal</td>
+                <td>H = (R / 2) - 6</td>
+                <td>Traslape y cruce central.</td>
+            </tr>
+            <tr>
+                <td>Hoja Vertical</td>
+                <td>V = J - 1.7</td>
+                <td>Juego en rieles.</td>
+            </tr>
+            <tr>
+                <td>Vidrio</td>
+                <td>(H + 1.3) x (V - 6.7)</td>
+                <td>Entrada en canal.</td>
+            </tr>
+            <tr>
+                <td>Maya Corrediza</td>
+                <td>(H + 3) x V</td>
+                <td>Marco exterior.</td>
+            </tr>
+        </table>
+    </section>
+
+    <hr>
+
+    <section class="simulator-box">
+        <h2 style="text-align: center; margin-top: 0;">🧮 GENERADOR DE LISTAS (SISTEMA TARS)</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Ingresa las medidas y generaré los recuadros listos para copiar con todas tus reglas.</p>
+
+        <div class="input-group">
+            <div class="input-wrapper">
+                <label>Ancho (cm)</label>
+                <input type="number" id="ancho" placeholder="Ej: 120" step="0.1">
+            </div>
+            <div class="input-wrapper">
+                <label>Alto (cm)</label>
+                <input type="number" id="alto" placeholder="Ej: 140" step="0.1">
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <button onclick="calcular()">CALCULAR Y GENERAR CÓDIGO</button>
+        </div>
+
+        <div id="resultados" class="code-section" style="display:none;">
+            <h3>Resultados Generados (Listos para Copiar)</h3>
+
+            <div class="copy-box">
+                <span class="label-area">1. LISTA DE CORTE UNIFICADA (TALLER)</span>
+                <textarea id="out_taller" readonly></textarea>
+            </div>
+
+            <div class="copy-box">
+                <span class="label-area">2. LISTA DE CORTE VIDRIOS</span>
+                <textarea id="out_vidrio" readonly></textarea>
+            </div>
+
+            <div class="copy-box">
+                <span class="label-area">3. MATERIAL GLOBAL (ANÁLISIS INTERNO)</span>
+                <textarea id="out_global" readonly></textarea>
+            </div>
+
+            <div class="copy-box">
+                <span class="label-area">4. LISTA DE COMPRA (DISTRIBUIDOR)</span>
+                <p class="note">*Incluye regla de +3cm en aluminio y formato [ - ]</p>
+                <textarea id="out_compra" readonly></textarea>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function calcular() {
+        // 1. Obtener datos
+        let R = parseFloat(document.getElementById('ancho').value);
+        let Alto = parseFloat(document.getElementById('alto').value);
+
+        if (isNaN(R) || isNaN(Alto)) {
+            alert("Por favor ingresa Ancho y Alto en centímetros.");
+            return;
+        }
+
+        // 2. Aplicar Fórmulas
+        let J = Alto - 1;
+        let H = (R / 2) - 6;
+        let V = J - 1.7;
+        
+        // Vidrios
+        let Vid_W = H + 1.3;
+        let Vid_H = V - 6.7;
+
+        // Maya
+        let Maya_W = H + 3;
+        let Maya_H = V;
+
+        // 3. Formatear números (1 decimal)
+        let R_f = R.toFixed(1);
+        let J_f = J.toFixed(1);
+        let H_f = H.toFixed(1);
+        let V_f = V.toFixed(1);
+        let Vid_W_f = Vid_W.toFixed(1);
+        let Vid_H_f = Vid_H.toFixed(1);
+        let Maya_W_f = Maya_W.toFixed(1);
+        let Maya_H_f = Maya_H.toFixed(1);
+
+        // 4. Lógica de Materiales (Totales)
+        // Riel: 2 * R
+        // Jamba: 2 * J
+        // Vert: 4 * V
+        // Horiz: 4 * H
+        // Maya: 2*W + 2*H
+        let tot_riel = (2 * R); 
+        let tot_jamba = (2 * J);
+        let tot_vert = (4 * V);
+        let tot_horiz = (4 * H);
+        let tot_maya = (2 * Maya_W) + (2 * Maya_H); // Perímetro simple para cálculo
+
+        // Regla de Compra (+3cm por retazo si es menor a 640)
+        // Función auxiliar para determinar texto de compra
+        function getCompraTxt(nombre, total_cm) {
+            if (total_cm >= 640) {
+                // Asumimos piezas enteras simplificado para este ejemplo
+                let piezas = Math.ceil(total_cm / 640);
+                return `[ ${piezas} ]   Pieza ${nombre} (Std 640cm)`;
+            } else {
+                let compra = (total_cm + 3).toFixed(1); // REGLA +3 CM
+                return `[ - ]   Perfil ${nombre}: ${compra} cm`;
+            }
+        }
+
+        // 5. Lógica Accesorios
+        let tipo_ruedas = (R <= 140.9) ? "Sencillas" : "Dobles";
+        
+        // --- GENERACIÓN DE STRINGS ---
+
+        // BLOQUE 1: TALLER
+        let txt_taller = 
+`>>> LISTA DE CORTE (1 VENTANA) <<<
+----------------------------------------
+[ PROYECTO: VENTANA ${R_f} x ${Alto.toFixed(1)} cm ]
+CANT   ELEMENTO           MEDIDA (cm)
+[ 2 ]  Riel Sup/Inf       ${R_f}
+[ 2 ]  Jamba Lateral      ${J_f}
+[ 4 ]  Horizontal Hoja    ${H_f}
+[ 4 ]  Vertical Hoja      ${V_f}
+[ 2 ]  Vidrio             ${Vid_W_f} x ${Vid_H_f}
+[ 1 ]  Maya Corrediza     ${Maya_W_f} x ${Maya_H_f}
+----------------------------------------
+OBSERVACIONES:
+- Perfiles Ventana: CORTE RECTO (90°).
+- Maya Corrediza: CORTE 45°.`;
+
+        // BLOQUE 2: VIDRIOS
+        let txt_vidrio = 
+`>>> ORDEN DE CORTE VIDRIO <<<
+----------------------------------------
+CANT   MEDIDA EXACTA (cm)  UBICACIÓN
+----------------------------------------
+[ 2 ]  ${Vid_W_f} x ${Vid_H_f}        Ventana Única
+----------------------------------------
+TOTAL: 2 Piezas (Medida Neta)`;
+
+        // BLOQUE 3: GLOBAL (con notas)
+        let txt_global = 
+`>>> MATERIAL GLOBAL CON NOTAS <<<
+----------------------------------------
+CANT    DESCRIPCIÓN
+----------------------------------------
+PERFILERÍA (Pieza: 640 cm | Compra: +3cm)
+[ - ]   Perfil Riel:       ${(tot_riel + 3).toFixed(1)} cm
+        *Nota: Suma lineal + 3cm seguridad.
+[ - ]   Perfil Jamba:      ${(tot_jamba + 3).toFixed(1)} cm
+[ - ]   Perfil Vertical:   ${(tot_vert + 3).toFixed(1)} cm
+[ - ]   Perfil Horizontal: ${(tot_horiz + 3).toFixed(1)} cm
+[ - ]   Perfil Maya Corr.: ${(tot_maya + 3).toFixed(1)} cm
+
+VIDRIO
+[ 1 ]   RETAZO EXACTO: ${(Vid_W * 2 + 2).toFixed(1)} x ${(Vid_H + 2).toFixed(1)} cm (Aprox)
+        *Nota: Bloque sugerido.`;
+
+        // BLOQUE 4: COMPRA (Limpio +3cm)
+        let txt_compra = 
+`>>> PEDIDO DE MATERIALES <<<
+----------------------------------------
+CANT    DESCRIPCIÓN
+----------------------------------------
+ALUMINIO (Cortes a medida incluyen +3cm)
+----------------------------------------
+${getCompraTxt("Riel", tot_riel)}
+${getCompraTxt("Jamba", tot_jamba)}
+${getCompraTxt("Vertical", tot_vert)}
+${getCompraTxt("Horizontal", tot_horiz)}
+${getCompraTxt("Maya Corr.", tot_maya)}
+
+VIDRIO (Claro/Flotado)
+----------------------------------------
+[ 1 ]   Retazo Exacto: ${(Vid_W * 2).toFixed(1)} x ${Vid_H_f} cm (Ref)
+
+ACCESORIOS
+----------------------------------------
+[ 4  ]  Esquineros para Maya Corrediza
+[ 4  ]  Ruedas ${tipo_ruedas}
+[ 1  ]  Seguro Manigueta
+[ Var]  Kilos de Vinil
+[ ?  ]  Piola Gruesa
+[ ?  ]  Metros de Tela Fibra
+[ ?  ]  Tornillos 2 1/2"
+[ ?  ]  Tacos Fisher
+----------------------------------------`;
+
+        // Llenar Textareas
+        document.getElementById('out_taller').value = txt_taller;
+        document.getElementById('out_vidrio').value = txt_vidrio;
+        document.getElementById('out_global').value = txt_global;
+        document.getElementById('out_compra').value = txt_compra;
+
+        // Mostrar sección
+        document.getElementById('resultados').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
